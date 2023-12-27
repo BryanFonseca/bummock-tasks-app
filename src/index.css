@@ -1,3 +1,9 @@
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 
@@ -15,3 +21,6 @@
   background: var(--background-gradient);
 }
 
+li {
+    list-style: none;
+}
