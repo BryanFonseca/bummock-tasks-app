@@ -24,6 +24,13 @@
     z-index: 0;
 }
 
+@media(max-width: 30em) {
+    .task button{
+        background-color: var(--danger);
+        color: var(--white);
+    }
+}
+
 .task:hover button {
     background-color: var(--danger);
     color: var(--white);
