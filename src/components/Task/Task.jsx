@@ -19,21 +19,21 @@ const trashSvg = (
     </svg>
 );
 
-function Task({ children: content, isCompleted }) {
-    const [isChecked, setIsChecked] = useState(true);
-
+function Task({ content, isCompleted, onDelete, onFlipCompletion }) {
     return (
-        <li className={`${styles.task} ${isChecked ? styles.completed : ""}`}>
+        <li className={`${styles.task} ${isCompleted ? styles.completed : ""}`}>
             <input
                 className={styles.check}
                 type="checkbox"
-                checked={isChecked}
-                onChange={() => setIsChecked(curr => !curr)}
+                checked={isCompleted}
+                onChange={onFlipCompletion}
             />
             <span className={styles.content}>
                 <span>{content}</span>
             </span>
-            <button className={styles.deleteButton}>{trashSvg}</button>
+            <button onClick={onDelete} className={styles.deleteButton}>
+                {trashSvg}
+            </button>
         </li>
     );
 }
