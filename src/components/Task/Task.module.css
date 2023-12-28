@@ -17,8 +17,8 @@
 .task:hover::before {
     content: "";
     position: absolute;
-    height: 115%;
-    width: 103%;
+    height: 100%;
+    width: 100%;
     transform: translateX(-1.5%);
     background-color: var(--main-darker);
     z-index: 0;
@@ -48,7 +48,7 @@
     transform: translateY(50%);
     height: 1.5px;
     animation-name: completed;
-    animation-duration: 0.4s;
+    animation-duration: 0.35s;
 }
 
 @keyframes completed {
@@ -64,6 +64,8 @@
 .check {
     height: 1rem;
     width: 1rem;
+    accent-color: var(--accent);
+    caret-color: white;
 }
 
 .content {

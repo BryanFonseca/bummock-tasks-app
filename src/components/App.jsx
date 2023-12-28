@@ -11,6 +11,11 @@ const INITIAL_STATE = [
         content: "Salvar al mundo",
         isCompleted: false,
     },
+    {
+        id: 2,
+        content: "Llevar al perro a dar un paseo",
+        isCompleted: true,
+    },
 ];
 
 function reducer(prevState, action) {
@@ -46,7 +51,7 @@ function reducer(prevState, action) {
 function App() {
     const [tasks, dispatch] = useReducer(reducer, INITIAL_STATE);
 
-    function handleFlipCompletion(taskId, isCompleted) {
+    function handleFlipCompletion(taskId) {
         dispatch({
             type: "flipCompletion",
             payload: taskId,

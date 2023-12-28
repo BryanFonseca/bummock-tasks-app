@@ -30,6 +30,7 @@ function AddBar({ onAdd }) {
     const [taskContent, setTaskContent] = useState("");
 
     function handleAdd() {
+        if (!taskContent) return;
         onAdd(createTask(taskContent));
         setTaskContent("");
     }
