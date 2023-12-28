@@ -1,0 +1,36 @@
+.addBar {
+    display: flex;
+    margin-bottom: 1em;
+    --border-radius: 0.3em;
+}
+
+.addBar__input {
+    flex-grow: 1;
+    background-color: var(--main-darker);
+    padding: 0.6em;
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+    color: var(--white);
+}
+
+.addBar__button {
+    background-color: var(--accent);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 10%;
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+}
+
+.addBar__button svg {
+    stroke-width: 2.1;
+    height: 24px;
+    width: 24px;
+}
+
+
+.addBar__button:hover {
+    cursor: pointer;
+}

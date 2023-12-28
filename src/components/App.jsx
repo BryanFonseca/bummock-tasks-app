@@ -1,28 +1,19 @@
+import AddBar from "./AddBar/AddBar";
+import DateSelector from "./DateSelector/DateSelector";
+import TaskList from "./TaskList/TaskList";
+import Task from "./Task/Task";
+import Layout from "./Layout/Layout";
+
 function App() {
     return (
-        <main>
-            <div>
-                <button>Left</button>
-                <div>
-                    <span>Lunes</span>
-                    <span>18/05/2023</span>
-                </div>
-                <button>Right</button>
-            </div>
-
-            <div>
-                <input type="text" />
-                <button>Add</button>
-            </div>
-
-            <ul>
-                <li>
-                    <input type="checkbox" />
-                    <span>Salvar al mundo</span>
-                    <button>Delete</button>
-                </li>
-            </ul>
-        </main>
+        <Layout>
+            <DateSelector />
+            <AddBar />
+            <TaskList>
+                <Task isCompleted={true}>Salvar al mundo</Task>
+                <Task isCompleted={false}>Ser mejor desarrollador</Task>
+            </TaskList>
+        </Layout>
     );
 }
 

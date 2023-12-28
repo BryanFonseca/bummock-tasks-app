@@ -1,0 +1,6 @@
+.appContainer {
+    width: 30rem;
+    background-color: var(--main-color);
+    padding: 2em;
+    border-radius: 0.4em;
+}

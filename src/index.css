@@ -1,26 +1,51 @@
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    /*font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;*/
 
-  --main-color: #3C424A;
-  --main-darker: #30353B;
-  --main-lighter: #777B80;
-  --black: #121416;
-  --white: #D8D9DB;
-  --accent: #33A6C2;
-  --danger: #C23355;
+    --main-color: #3C424A;
+    --main-darker: #30353B;
+    --main-lighter: #777B80;
+    --black: #121416;
+    --white: #D8D9DB;
+    --accent: #33A6C2;
+    --danger: #C23355;
 
-  --background-gradient: linear-gradient(112deg, #33A6C2 6.73%, #2F8A85 102.23%);
+    --background-gradient: linear-gradient(112deg, #33A6C2 6.73%, #2F8A85 102.23%);
 
-  color: var(--white);
-  background: var(--background-gradient);
+    color: var(--white);
+    background: var(--background-gradient);
+}
+
+#root {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 li {
     list-style: none;
+}
+
+input,
+textarea {
+    border: none;
+}
+
+button {
+    border: none;
+}
+
+svg {
+    height: 20px;
+    width: 20px;
+    stroke-width: 2;
 }
