@@ -1,6 +1,8 @@
 import React from "react";
 
 import styles from "./Task.module.css";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteTask, changeCompletion } from "../../services/apiTasks";
 
 const trashSvg = (
     <svg
@@ -19,19 +21,40 @@ const trashSvg = (
     </svg>
 );
 
-function Task({ content, isCompleted, onDelete, onFlipCompletion }) {
+function Task({ id, content, isCompleted }) {
+    const queryClient = useQueryClient();
+    const { isLoading, mutate: mutateDeleteTask } = useMutation({
+        mutationFn: deleteTask,
+        onSuccess: () =>
+            queryClient.invalidateQueries({
+                queryKey: ["tasks"],
+            }),
+    });
+    const { mutate: mutateFlipCompletion } = useMutation({
+        mutationFn: changeCompletion,
+        onSuccess: () =>
+            queryClient.invalidateQueries({
+                queryKey: ["tasks"],
+            }),
+    });
+
     return (
         <li className={`${styles.task} ${isCompleted ? styles.completed : ""}`}>
             <input
                 className={styles.check}
                 type="checkbox"
                 checked={isCompleted}
-                onChange={onFlipCompletion}
+                onChange={() =>
+                    mutateFlipCompletion({ id, isCompleted: !isCompleted })
+                }
             />
             <span className={styles.content}>
                 <span>{content}</span>
             </span>
-            <button onClick={onDelete} className={styles.deleteButton}>
+            <button
+                onClick={() => mutateDeleteTask(id)}
+                className={styles.deleteButton}
+            >
                 {trashSvg}
             </button>
         </li>

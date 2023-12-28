@@ -3,82 +3,48 @@ import DateSelector from "./DateSelector/DateSelector";
 import TaskList from "./TaskList/TaskList";
 import Task from "./Task/Task";
 import Layout from "./Layout/Layout";
-import { useReducer } from "react";
-
-const INITIAL_STATE = [
-    {
-        id: 1,
-        content: "Salvar al mundo",
-        isCompleted: false,
-    },
-    {
-        id: 2,
-        content: "Llevar al perro a dar un paseo",
-        isCompleted: true,
-    },
-];
-
-function reducer(prevState, action) {
-    switch (action.type) {
-        case "addTask": {
-            const task = action.payload;
-            return [task, ...prevState];
-        }
-
-        case "deleteTask": {
-            const taskId = action.payload;
-            return [...prevState].filter((task) => task.id !== taskId);
-        }
-
-        case "flipCompletion": {
-            const taskId = action.payload;
-            const newState = prevState.map((task) =>
-                task.id === taskId
-                    ? {
-                          ...task,
-                          isCompleted: !task.isCompleted,
-                      }
-                    : { ...task }
-            );
-            return newState;
-        }
-
-        default:
-            throw new Error("Invalid action");
-    }
-}
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getTasksByDate } from "../services/apiTasks";
+import { formatDate, parseDate } from "../helpers/dates";
 
 function App() {
-    const [tasks, dispatch] = useReducer(reducer, INITIAL_STATE);
+    const [selectedDate, setSelectedDate] = useState(() =>
+        formatDate(new Date())
+    );
+    const {
+        data: tasks,
+        isLoading,
+        isError,
+    } = useQuery({
+        queryKey: ["tasks", selectedDate],
+        queryFn: () => getTasksByDate(selectedDate),
+    });
 
-    function handleFlipCompletion(taskId) {
-        dispatch({
-            type: "flipCompletion",
-            payload: taskId,
-        });
-    }
-
-    function handleDelete(taskId) {
-        dispatch({ type: "deleteTask", payload: taskId });
-    }
-
-    function handleAdd(task) {
-        dispatch({ type: "addTask", payload: task });
+    function handleChangeDate(amount) {
+        const parsedDate = parseDate(selectedDate);
+        const resultingDate = new Date(
+            parsedDate.getFullYear(),
+            parsedDate.getMonth(),
+            parsedDate.getDate() + amount
+        );
+        setSelectedDate(formatDate(resultingDate));
     }
 
     return (
         <Layout>
-            <DateSelector />
-            <AddBar onAdd={handleAdd} />
+            <DateSelector
+                date={parseDate(selectedDate)}
+                onNextDate={() => handleChangeDate(1)}
+                onPrevDate={() => handleChangeDate(-1)}
+            />
+            <AddBar currentDate={selectedDate} />
+            {!isError && tasks?.length === 0 && <em>Sin tareas</em>}
             <TaskList>
-                {tasks.map((task) => (
-                    <Task
-                        key={task.id}
-                        onFlipCompletion={() => handleFlipCompletion(task.id)}
-                        onDelete={() => handleDelete(task.id)}
-                        {...task}
-                    />
-                ))}
+                {isLoading && "Cargando..."}
+                {!isLoading &&
+                    !isError &&
+                    tasks.map((task) => <Task key={task.id} {...task} />)}
             </TaskList>
         </Layout>
     );

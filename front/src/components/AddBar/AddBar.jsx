@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import styles from "./AddBar.module.css";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createTask } from "../../services/apiTasks";
+import { isSomeDaysLess, parseDate } from "../../helpers/dates";
+import useLocalStorageState from '../../hooks/useLocalStorageState';
 
 const plusSvg = (
     <svg
@@ -18,31 +22,41 @@ const plusSvg = (
     </svg>
 );
 
-function createTask(content) {
-    return {
-        id: Math.floor(Math.random() * 100000),
-        isCompleted: false,
-        content,
-    };
-}
-
-function AddBar({ onAdd }) {
-    const [taskContent, setTaskContent] = useState("");
+function AddBar({ currentDate }) {
+    const queryClient = useQueryClient();
+    const [taskContent, setTaskContent] = useLocalStorageState("taskContent", "");
+    const { mutate } = useMutation({
+        mutationFn: createTask,
+        onSuccess: () =>
+            queryClient.invalidateQueries({
+                queryKey: ["tasks"],
+            }),
+    });
 
     function handleAdd() {
         if (!taskContent) return;
-        onAdd(createTask(taskContent));
+        mutate({
+            content: taskContent,
+            date: currentDate,
+        });
         setTaskContent("");
     }
 
+    const isDisabled = isSomeDaysLess(parseDate(currentDate), new Date());
+
     return (
         <div className={styles.addBar}>
-            <textarea
+            <input
                 className={styles.addBar__input}
                 type="text"
-                placeholder="Agrega una tarea..."
+                placeholder={
+                    isDisabled
+                        ? "No se puede agregar tareas en fechas pasadas"
+                        : "Agrega una tarea..."
+                }
                 value={taskContent}
                 onChange={(e) => setTaskContent(e.target.value)}
+                disabled={isDisabled}
             />
             <button onClick={handleAdd} className={styles.addBar__button}>
                 {plusSvg}

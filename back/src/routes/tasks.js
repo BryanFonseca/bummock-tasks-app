@@ -37,11 +37,12 @@ router.get(
 
         const tasks = await Task.findAll({
             where: {
-                createdAt: {
+                date: {
                     [Op.gte]: startDate,
                     [Op.lt]: endDate,
                 },
             },
+            order: [["createdAt", 'DESC']],
         });
         res.status(200).send(tasks);
     }
@@ -52,15 +53,24 @@ router.post(
     [
         body("content")
             .trim()
-            .isLength({ min: 5, max: 200 })
+            .isLength({ min: 1, max: 200 })
             .withMessage("Se debe proporcionar contenido de la tarea"),
     ],
     validateRequest,
     async function (req, res) {
-        const { content } = req.body;
-        const task = await Task.create({
-            content,
-        });
+        const { content, date: dateString } = req.body;
+        let task = null;
+        if (dateString) {
+            const date = createDateFromFormat(dateString);
+            task = await Task.create({
+                content,
+                date,
+            });
+        } else {
+            task = await Task.create({
+                content,
+            });
+        }
         res.status(200).send(task);
     }
 );

@@ -1,6 +1,7 @@
 import React from "react";
 
 import styles from "./DateSelector.module.css";
+import { formatDate } from "../../helpers/dates";
 
 const leftSvg = (
     <svg
@@ -36,15 +37,24 @@ const rightSvg = (
     </svg>
 );
 
-function DateSelector() {
+function determineWeekDay(date) {
+    const day = date.toLocaleDateString("es", { weekday: "long" });
+    return day.charAt(0).toUpperCase() + day.slice(1);
+}
+
+function DateSelector({ onNextDate, onPrevDate, date }) {
     return (
         <div className={styles.dateSelector}>
-            <button>{leftSvg}</button>
+            <button onClick={onPrevDate}>{leftSvg}</button>
             <div className={styles.center}>
-                <span className={styles.center__day}>Lunes</span>
-                <span className={styles.center__date}>18/05/2023</span>
+                <span className={styles.center__day}>
+                    {determineWeekDay(date) ?? "Lunes"}
+                </span>
+                <span className={styles.center__date}>
+                    {date ? formatDate(date) : "18/05/2001"}
+                </span>
             </div>
-            <button>{rightSvg}</button>
+            <button onClick={onNextDate}>{rightSvg}</button>
         </div>
     );
 }

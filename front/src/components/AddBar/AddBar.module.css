@@ -13,6 +13,11 @@
     color: var(--white);
 }
 
+.addBar__input:disabled {
+    background-color: rgba(0, 0, 0, 40%);
+    color: white;
+}
+
 .addBar__button {
     background-color: var(--accent);
     color: white;

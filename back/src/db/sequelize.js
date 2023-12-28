@@ -15,6 +15,10 @@ const Task = sequelize.define("Task", {
         defaultValue: false,
         allowNull: false,
     },
+    date: {
+        type: DataTypes.DATEONLY,
+        defaultValue: new Date(),
+    }
 });
 
 await sequelize.sync({ force: true });
