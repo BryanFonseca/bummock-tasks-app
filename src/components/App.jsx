@@ -3,17 +3,53 @@ import DateSelector from "./DateSelector/DateSelector";
 import TaskList from "./TaskList/TaskList";
 import Task from "./Task/Task";
 import Layout from "./Layout/Layout";
-import { useReducer } from "react";
 import { formatDate, parseDate } from "../helpers/dates";
+import useReducerWithLocalStorage from "../hooks/useReducerWithLocalStorage";
 
 const INITIAL_STATE = {
     date: formatDate(new Date()),
     tasks: [
         {
             id: 1,
+            content: "Terminar de ver Breaking Bad",
+            isCompleted: false,
+            date: formatDate(new Date()),
+        },
+        {
+            id: 2,
+            content: "Aprender a preparar lasagna",
+            isCompleted: false,
+            date: formatDate(new Date()),
+        },
+        {
+            id: 3,
+            content: "Diseñar aplicación de tasks",
+            isCompleted: true,
+            date: formatDate(new Date()),
+        },
+        {
+            id: 4,
             content: "Salvar al mundo",
             isCompleted: false,
             date: formatDate(new Date()),
+        },
+        {
+            id: 5,
+            content: "Llevar al perro a dar un paseo",
+            isCompleted: true,
+            date: formatDate(
+                // Ayer 😂
+                new Date(new Date().setDate(new Date().getDate() - 1))
+            ),
+        },
+        {
+            id: 6,
+            content: "Sacar la basura",
+            isCompleted: true,
+            date: formatDate(
+                // Ayer 😂
+                new Date(new Date().setDate(new Date().getDate() - 1))
+            ),
         },
     ],
 };
@@ -79,7 +115,11 @@ function reducer(prevState, action) {
 }
 
 function App() {
-    const [{ tasks, date }, dispatch] = useReducer(reducer, INITIAL_STATE);
+    const [{ tasks, date }, dispatch] = useReducerWithLocalStorage(
+        reducer,
+        INITIAL_STATE,
+        "globalState"
+    );
 
     function handleFlipCompletion(taskId) {
         dispatch({

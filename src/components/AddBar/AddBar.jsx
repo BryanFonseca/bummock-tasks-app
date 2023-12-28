@@ -30,13 +30,14 @@ function AddBar({ onAdd }) {
     const [taskContent, setTaskContent] = useState("");
 
     function handleAdd() {
+        if (!taskContent) return;
         onAdd(createTask(taskContent));
         setTaskContent("");
     }
 
     return (
         <div className={styles.addBar}>
-            <textarea
+            <input
                 className={styles.addBar__input}
                 type="text"
                 placeholder="Agrega una tarea..."
